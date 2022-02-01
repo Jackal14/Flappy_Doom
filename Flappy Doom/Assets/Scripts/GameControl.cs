@@ -16,8 +16,6 @@ public class GameControl : MonoBehaviour
 
     public bool gameOver = false;
 
-    public float scrollSpeed = -1.5f;
-
     private void Awake()
     {
         if(instance == null)
@@ -33,7 +31,7 @@ public class GameControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gameOver && Input.GetMouseButtonDown(0))
+        if(gameOver && Input.GetButtonDown("Flap"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }

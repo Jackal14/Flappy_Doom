@@ -8,6 +8,7 @@ public class Doom : MonoBehaviour
     private Rigidbody2D rb2d;
     public float upForce = 200f;
     private Animator anim;
+    public int health = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +22,7 @@ public class Doom : MonoBehaviour
     {
         if(isDead == false)
         {
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetButtonDown("Flap"))
             {
                 anim.SetTrigger("Flap");
                 rb2d.velocity = Vector2.zero;
@@ -32,9 +33,25 @@ public class Doom : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        rb2d.velocity = Vector2.zero;
-        isDead = true;
-        anim.SetTrigger("Die");
-        GameControl.instance.BirdDied();
+        health--;
+        if(health > 0)
+        {
+            anim.SetBool("playerHit", true);
+            StartCoroutine(PlayerHit());
+        }
+        else
+        {
+            rb2d.velocity = Vector2.zero;
+            isDead = true;
+            anim.SetTrigger("Die");
+            GameControl.instance.BirdDied();
+        }
+        
+    }
+
+    IEnumerator PlayerHit()
+    {
+        yield return new WaitForSeconds(3);
+        anim.SetBool("playerHit", false);
     }
 }
